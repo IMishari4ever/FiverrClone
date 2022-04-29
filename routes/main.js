@@ -6,8 +6,7 @@ const User = require('../routes/userRoute')
 const authController = require('../controller/authController')
 
 
-router.use(authController.middleware)
-
+router.get('/getGig/:Id', authController.getGig)
 
 router.get('/', (req, res, next) => {
 
@@ -15,6 +14,10 @@ router.get('/', (req, res, next) => {
       res.status(201).json({gigs})
     })
 });
+
+
+
+router.use(authController.protect);
 
 router.get('/my-gigs', (req, res, next) => {
   Gig.find({ owner: req.user._id }, function(err, gigs) {

@@ -2,7 +2,6 @@ const Gig = require('../models/gig')
 const User = require('../models/user')
 
 exports.createGig = async (req,res,next) => {
-  console.log(req.user)
   const gig = await Gig.create({
     owner: req.user._id,
     title: req.body.gig_title,
@@ -11,12 +10,12 @@ exports.createGig = async (req,res,next) => {
     about: req.body.gig_about
   })
   await gig.save();
-  await User.update(
+  await User.updateOne(
     {
     _id: req.user._id
   },{
-    $push: {gigs: gigs._id}
+    $push: {gigs: gig._id}
   },
-  res.json({message:"sucessfully", gigs})
+  res.json({message:"sucessfully", gig})
   )
 }
